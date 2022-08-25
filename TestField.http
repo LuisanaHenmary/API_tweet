@@ -1,0 +1,7 @@
+@url_base = http://127.0.0.1:8000
+
+### Get begging
+GET {{url_base}}
+
+### Get visualizar todos los tweets
+GET {{url_base}}/tweets
