@@ -18,7 +18,6 @@ class UserBase(BaseModel):
         example='sebas@sebas.com'
     )
 
-class User(UserBase):
     user_name: str = Field(
         ...,
         min_length=3,
@@ -26,6 +25,8 @@ class User(UserBase):
         example='sgewux'
     )
 
+class User(UserBase):
+    
     first_name: str = Field(
         ...,
         min_length=1,
