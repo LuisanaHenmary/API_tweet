@@ -48,6 +48,7 @@ def sign_up_user(user: UserRegister = Body(...)):
         Return a json with the basic user information:
             - user_id: UUID
             - email: EmailStr
+            - user_name: str
             - first_name: str
             - last_name: str
             - birth_date: date
@@ -60,4 +61,37 @@ def sign_up_user(user: UserRegister = Body(...)):
         results.append(user_dict)
         f.seek(0)
         f.write(json.dumps(results))
+        f.close()
         return user
+
+
+###ONLY USERS###
+
+#show all users
+@app.get(
+    path="/users",
+    tags=["Users"],
+    response_model=List[User],
+    status_code=status.HTTP_200_OK,
+    summary="Shows all users"
+)
+def show_all_users():
+    """
+        Show all users
+
+        This path operation shows all users in the app
+
+        Parameters:
+            - 
+
+        Return a json list with all users in the app, with the following keys
+            - user_id: UUID
+            - email: EmailStr
+            - user_name: str
+            - first_name: str
+            - last_name: str
+            - birth_date: date
+    """
+    with open("users.json", "r", encoding="utf-8") as f:
+        results = json.loads(f.read())
+        return results

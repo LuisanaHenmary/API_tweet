@@ -16,3 +16,6 @@ Content-Type: application/json
   "last_name": "Perez",
   "birth_date": "2004-07-19"
 }
+
+### get show all users
+GET {{url_base}}/users
