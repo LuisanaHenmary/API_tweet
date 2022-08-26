@@ -51,3 +51,6 @@ class UserLogin(UserBase):
         min_length=8,
         max_length=64
     )
+
+class UserRegister(User, UserLogin):
+    pass

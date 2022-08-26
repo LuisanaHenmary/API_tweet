@@ -3,5 +3,16 @@
 ### Get begging
 GET {{url_base}}
 
-### Get visualizar todos los tweets
-GET {{url_base}}/tweets
+### post create a new user
+POST {{url_base}}/auth/signup
+Content-Type: application/json
+
+{
+  "user_id": "a239451c-8525-4376-b8ca-070dd799a1a5",
+  "email": "luisanahenmary@gmail.com",
+  "user_name":"CiberWitch",
+  "password": "caraota123()",
+  "first_name": "Luisana",
+  "last_name": "Perez",
+  "birth_date": "2004-07-19"
+}
