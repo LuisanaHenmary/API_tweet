@@ -5,18 +5,22 @@ from fastapi import (
 
 from typing import List
 
+from models.tweet import Tweet
 from models.user import User
 #uvicorn main:app --reload 
 app = FastAPI()
+###DEFAULT###
 
-#Default
+#home
 @app.get(
     path="/"
 )
 def home():
-    return {"Twitter":"Welcome!"}
+    return {"Welcome to view api documentation":"http://127.0.0.1:8000/redoc"}
 
-#Authentication and Users
+###AUTHENTICATION AND USERS###
+
+#user register
 @app.post(
     path="/auth/signup",
     tags=["Authentication","Users"],
@@ -27,6 +31,7 @@ def home():
 def sign_up_user():
     pass
 
+#user login
 @app.post(
     path="/auth/login",
     tags=["Authentication","Users"],
@@ -37,7 +42,9 @@ def sign_up_user():
 def log_in_user():
     pass
 
-#Only Users
+###ONLY USERS###
+
+#show all users
 @app.get(
     path="/users",
     tags=["Users"],
@@ -48,6 +55,7 @@ def log_in_user():
 def show_all_users():
     pass
 
+#show a specific user
 @app.get(
     path="/users/{user_id}",
     tags=["Users"],
@@ -58,6 +66,7 @@ def show_all_users():
 def show_a_user():
     pass
 
+#updates a specific user
 @app.put(
     path="/users/update/{user_id}",
     tags=["Users"],
@@ -68,6 +77,7 @@ def show_a_user():
 def update_a_user():
     pass
 
+#delete a specific user
 @app.delete(
     path="/users/delete/{user_id}",
     tags=["Users"],
@@ -76,5 +86,63 @@ def update_a_user():
     summary="Delete a specific user"
 )
 def delete_a_user():
+    pass
+
+###TWEETS###
+
+#shows all tweets
+@app.get(
+    path="/tweets",
+    tags=["Tweets"],
+    response_model=List[Tweet],
+    status_code=status.HTTP_200_OK,
+    summary="Shows all tweets"
+
+)
+def show_all_twets():
+    return {"estado":"en construccion"}
+
+#post a new tweet
+@app.post(
+    path="/tweet",
+    tags=["Tweets"],
+    response_model=Tweet,
+    status_code=status.HTTP_201_CREATED,
+    summary="Post a new tweet"
+)
+def post_new_tweet():
+    pass
+
+#show a specific tweet
+@app.get(
+    path="/tweet/{tweet_id}",
+    tags=["Tweets"],
+    status_code=status.HTTP_200_OK,
+    summary="Show a tweet",
+    response_model=Tweet
+)
+def show_a_tweet():
+    pass
+
+#update a specific tweet
+@app.put(
+    path="/tweet/update/{tweet_id}",
+    tags=["Tweets"],
+    status_code=status.HTTP_200_OK,
+    summary="Update a tweet",
+    response_model=Tweet
+)
+def update_a_tweet():
+    pass
+
+#delete a specific tweet
+@app.delete(
+    path="/tweet/delete/{tweet_id}",
+    tags=["Tweets"],
+    status_code=status.HTTP_200_OK,
+    summary="Delete a tweet",
+    response_model=Tweet
+)
+def delete_a_tweet():
     pass
 

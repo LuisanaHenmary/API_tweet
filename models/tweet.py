@@ -9,7 +9,7 @@ from pydantic import (
     Field
 )
 
-from user import User
+from .user import User
 
 class Tweet(BaseModel):
     tweet_id: UUID  = Field(...)
