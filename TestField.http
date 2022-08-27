@@ -19,3 +19,12 @@ Content-Type: application/json
 
 ### get show all users
 GET {{url_base}}/users
+
+### get show a users 0
+GET {{url_base}}/users/a239451c-8525-4376-b8ca-070dd799a1a5
+
+### get show a users 1
+GET {{url_base}}/users/a239451c-8525-4376-b8ca-070dd449a1a5
+
+### get show a users 2
+GET {{url_base}}/users/a239501c-8525-4376-b8ca-070dd449a1a5

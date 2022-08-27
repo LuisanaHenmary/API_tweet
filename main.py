@@ -6,6 +6,7 @@ from fastapi import (
     FastAPI,
     status,
     HTTPException,
+    Path,
     Body
 )
 
@@ -117,3 +118,33 @@ def show_all_users():
         list_user.append(user_dict(ele))
 
     return list_user
+
+#show a specific user
+@app.get(
+    path="/users/{user_id}",
+    tags=["Users"],
+    response_model=User,
+    status_code=status.HTTP_200_OK,
+    summary="Show a specific user"
+)
+def show_a_user( 
+    user_id: str = Path(
+        ...,
+        title="Person id",
+        description="This is person id, it is greter or equal to 0",
+        example=999
+    )):
+    query = f"""SELECT user_id,
+    email,
+    user_name,
+    first_name,
+    last_name,
+    birth_date,
+    password
+    FROM user WHERE user_id="{user_id}" """
+
+    resp = run_query(query=query)
+    for ele in resp:
+        dict_resp = user_dict(ele)
+
+    return dict_resp
