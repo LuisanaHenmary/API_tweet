@@ -21,7 +21,7 @@ class UserBase(BaseModel):
     user_name: str = Field(
         ...,
         min_length=3,
-        max_length=10,
+        max_length=30,
         example='sgewux'
     )
 

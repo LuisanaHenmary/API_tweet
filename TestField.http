@@ -8,11 +8,11 @@ POST {{url_base}}/auth/signup
 Content-Type: application/json
 
 {
-  "user_id": "a239451c-8525-4376-b8ca-070dd799a1a5",
-  "email": "luisanahenmary@gmail.com",
-  "user_name":"CiberWitch",
-  "password": "caraota123()",
-  "first_name": "Luisana",
+  "user_id": "a239501c-8525-4376-b8ca-070dd449a1a5",
+  "email": "jesusandres@gmail.com",
+  "user_name":"FireGrunge13",
+  "password": "itadori123/",
+  "first_name": "jesus",
   "last_name": "Perez",
   "birth_date": "2004-07-19"
 }

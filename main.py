@@ -1,11 +1,11 @@
-import json
-from io import open
+from utils.funtions import run_query, user_dict
 
 from typing import List
 
 from fastapi import (
     FastAPI,
     status,
+    HTTPException,
     Body
 )
 
@@ -53,16 +53,24 @@ def sign_up_user(user: UserRegister = Body(...)):
             - last_name: str
             - birth_date: date
     """
-    with open("users.json", "r+", encoding="utf-8") as f:
-        results = json.loads(f.read())
-        user_dict = user.dict()
-        user_dict["user_id"] = str(user_dict["user_id"])
-        user_dict["birth_date"] = str(user_dict["birth_date"])
-        results.append(user_dict)
-        f.seek(0)
-        f.write(json.dumps(results))
-        f.close()
-        return user
+    parameters = (
+        str(user.user_id),
+        user.email,
+        user.user_name,
+        user.first_name,
+        user.last_name,
+        user.birth_date,
+        user.password
+    )
+    try:
+        run_query("INSERT INTO user VALUES(null,?,?,?,?,?,?,?)", parameters)
+    except Exception as error:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="This user does exist"
+        )
+    
+    return user
 
 
 ###ONLY USERS###
@@ -92,6 +100,20 @@ def show_all_users():
             - last_name: str
             - birth_date: date
     """
-    with open("users.json", "r", encoding="utf-8") as f:
-        results = json.loads(f.read())
-        return results
+
+    query = """SELECT user_id,
+    email,
+    user_name,
+    first_name,
+    last_name,
+    birth_date,
+    password
+    FROM user"""
+
+    list_user = []
+
+    resp = run_query(query=query)
+    for ele in resp:
+        list_user.append(user_dict(ele))
+
+    return list_user
