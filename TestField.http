@@ -28,3 +28,19 @@ GET {{url_base}}/users/a239451c-8525-4376-b8ca-070dd449a1a5
 
 ### get show a users 2
 GET {{url_base}}/users/a239501c-8525-4376-b8ca-070dd449a1a5
+
+### update a users 0
+PUT  {{url_base}}/users/update/a239451c-8525-4376-b8ca-070dd799a1a5
+
+{
+  "user_id": "a239501c-8525-4376-b8ca-070dd449a1a5",
+  "email": "luisanahenmary@gmail.com",
+  "user_name":"CiberWitch123$",
+  "password": "Force125&",
+  "first_name": "Luisana",
+  "last_name": "Perez",
+  "birth_date": "1997-12-16"
+}
+
+### update a users 0
+DELETE   {{url_base}}/users/delete/a239501c-8525-4376-b8ca-070dd449a1a5

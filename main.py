@@ -141,10 +141,71 @@ def show_a_user(
     last_name,
     birth_date,
     password
-    FROM user WHERE user_id="{user_id}" """
+    FROM user WHERE user_id='{user_id}' """
 
     resp = run_query(query=query)
     for ele in resp:
         dict_resp = user_dict(ele)
 
+    return dict_resp
+
+#updates a specific user
+@app.put(
+    path="/users/update/{user_id}",
+    tags=["Users"],
+    response_model=User,
+    status_code=status.HTTP_200_OK,
+    summary="Updates a specific user"
+)
+def update_a_user(
+    user_id: str = Path(
+        ...,
+        title="Person id",
+        description="This is person id, it is greter or equal to 0",
+        example=999
+    ),
+    user: UserRegister = Body(...)
+    ):
+
+    query = f"""UPDATE user SET 
+    user_name='{user.user_name}',
+    password='{user.password}'
+    WHERE user_id='{user_id}' """
+
+    run_query(query=query)
+
+    return user
+
+
+    #delete a specific user
+@app.delete(
+    path="/users/delete/{user_id}",
+    tags=["Users"],
+    response_model=User,
+    status_code=status.HTTP_200_OK,
+    summary="Delete a specific user"
+)
+def delete_a_user(
+    user_id: str = Path(
+        ...,
+        title="Person id",
+        description="This is person id, it is greter or equal to 0",
+        example=999
+    )):
+
+    query = f"""SELECT user_id,
+    email,
+    user_name,
+    first_name,
+    last_name,
+    birth_date,
+    password
+    FROM user WHERE user_id='{user_id}' """
+
+    resp = run_query(query=query)
+    for ele in resp:
+        dict_resp = user_dict(ele)
+
+    query = f"DELETE FROM user WHERE user_id='{user_id}'"
+    run_query(query=query)
     return dict_resp
