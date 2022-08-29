@@ -53,3 +53,38 @@ def user_dict(values=()):
         "last_name": values[4],
         "birth_date": values[5]
     }
+
+def tweet_dict(values=()):
+
+    """
+        Tweet dict
+
+        It is to convert a tuple into a dictionary
+
+        Parameters:
+            - values: Tuple
+
+        Returns a dictionary with the user information
+            - user_id: str
+            - email: str
+            - user_name: str
+            - first_name: str
+            - last_name: str
+            - birth_date: date
+    
+    """
+
+    query=f"""SELECT * FROM user WHERE user_id='{values[1]}' """
+
+    resp = run_query(query=query)
+    
+    for r in resp:
+        dict_rest = user_dict(r)
+
+    return {
+        "tweet_id":values[0],
+        "content": values[3],
+        "created_at": values[4],
+        "updated_at": values[5],
+        "by":dict_rest
+    }

@@ -1,4 +1,8 @@
-from utils.funtions import run_query, user_dict
+from utils.funtions import (
+    run_query,
+    user_dict,
+    tweet_dict
+)
 
 from typing import List
 
@@ -15,6 +19,7 @@ from models.user import (
     User,
     UserRegister
 )
+
 #uvicorn main:app --reload 
 app = FastAPI()
 ###DEFAULT###
@@ -64,7 +69,7 @@ def sign_up_user(user: UserRegister = Body(...)):
         user.password
     )
     try:
-        run_query("INSERT INTO user VALUES(null,?,?,?,?,?,?,?)", parameters)
+        run_query("INSERT INTO user VALUES(?,?,?,?,?,?,?)", parameters)
     except Exception as error:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -176,7 +181,6 @@ def update_a_user(
 
     return user
 
-
     #delete a specific user
 @app.delete(
     path="/users/delete/{user_id}",
@@ -209,3 +213,77 @@ def delete_a_user(
     query = f"DELETE FROM user WHERE user_id='{user_id}'"
     run_query(query=query)
     return dict_resp
+
+
+###TWEETS###
+
+
+#shows all tweets
+@app.get(
+    path="/tweets",
+    tags=["Tweets"],
+    response_model=List[Tweet],
+    status_code=status.HTTP_200_OK,
+    summary="Shows all tweets"
+
+)
+def show_all_twets():
+    query = """SELECT tweet_id,
+    user_id,
+    user_name,
+    content,
+    created_at,
+    updated_at
+    FROM tweet"""
+
+    list_tweet = []
+
+    resp = run_query(query=query)
+    for ele in resp:
+        list_tweet.append(tweet_dict(ele))
+
+    return list_tweet
+
+#post a new tweet
+@app.post(
+    path="/tweet",
+    tags=["Tweets"],
+    response_model=Tweet,
+    status_code=status.HTTP_201_CREATED,
+    summary="Post a new tweet"
+)
+def post_new_tweet(tweet: Tweet = Body(...)):
+    """
+        Post a tweet
+
+        This path operation post a tweet in the app
+
+        Parameters:
+            - Request body parameters
+                - tweet: Tweet
+
+        Return a json with the basic tweet information:
+            - tweet_id: UUID
+            - content: str
+            - created_at: datetime
+            - updated_at: Optional[datetime]
+            - by: User
+    """
+
+    parameters = (
+        str(tweet.tweet_id),
+        str(tweet.by.user_id),
+        tweet.by.user_name,
+        tweet.content,
+        str(tweet.created_at),
+        str(tweet.updated_at)
+    )
+
+    try:
+        run_query("INSERT INTO tweet VALUES(?,?,?,?,?,?)", parameters)
+    except Exception as error:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="tweet repeat"
+        )
+    return tweet
