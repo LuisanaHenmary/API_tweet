@@ -59,6 +59,7 @@ def sign_up_user(user: UserRegister = Body(...)):
             - last_name: str
             - birth_date: date
     """
+    query = "INSERT INTO user VALUES(?,?,?,?,?,?,?)"
     parameters = (
         str(user.user_id),
         user.email,
@@ -69,11 +70,11 @@ def sign_up_user(user: UserRegister = Body(...)):
         user.password
     )
     try:
-        run_query("INSERT INTO user VALUES(?,?,?,?,?,?,?)", parameters)
+        run_query(query, parameters)
     except Exception as error:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="This user does exist"
+            detail="This user alredy exist"
         )
     
     return user
@@ -107,22 +108,15 @@ def show_all_users():
             - birth_date: date
     """
 
-    query = """SELECT user_id,
-    email,
-    user_name,
-    first_name,
-    last_name,
-    birth_date,
-    password
-    FROM user"""
+    query = "SELECT * FROM user"
 
-    list_user = []
+    list_users = []
 
-    resp = run_query(query=query)
+    resp = run_query(query)
     for ele in resp:
-        list_user.append(user_dict(ele))
+        list_users.append(user_dict(ele))
 
-    return list_user
+    return list_users
 
 #show a specific user
 @app.get(
@@ -136,19 +130,11 @@ def show_a_user(
     user_id: str = Path(
         ...,
         title="Person id",
-        description="This is person id, it is greter or equal to 0",
-        example=999
+        description="This is person id, it is greter or equal to 0"
     )):
-    query = f"""SELECT user_id,
-    email,
-    user_name,
-    first_name,
-    last_name,
-    birth_date,
-    password
-    FROM user WHERE user_id='{user_id}' """
+    query = f"SELECT * FROM user WHERE user_id='{user_id}'"
 
-    resp = run_query(query=query)
+    resp = run_query(query)
     for ele in resp:
         dict_resp = user_dict(ele)
 
@@ -166,8 +152,7 @@ def update_a_user(
     user_id: str = Path(
         ...,
         title="Person id",
-        description="This is person id, it is greter or equal to 0",
-        example=999
+        description="This is person id, it is greter or equal to 0"
     ),
     user: UserRegister = Body(...)
     ):
@@ -177,7 +162,7 @@ def update_a_user(
     password='{user.password}'
     WHERE user_id='{user_id}' """
 
-    run_query(query=query)
+    run_query(query)
 
     return user
 
@@ -193,25 +178,17 @@ def delete_a_user(
     user_id: str = Path(
         ...,
         title="Person id",
-        description="This is person id, it is greter or equal to 0",
-        example=999
+        description="This is person id, it is greter or equal to 0"
     )):
 
-    query = f"""SELECT user_id,
-    email,
-    user_name,
-    first_name,
-    last_name,
-    birth_date,
-    password
-    FROM user WHERE user_id='{user_id}' """
+    query = f"SELECT * FROM user WHERE user_id='{user_id}' "
 
-    resp = run_query(query=query)
+    resp = run_query(query)
     for ele in resp:
         dict_resp = user_dict(ele)
 
     query = f"DELETE FROM user WHERE user_id='{user_id}'"
-    run_query(query=query)
+    run_query(query)
     return dict_resp
 
 
@@ -228,21 +205,56 @@ def delete_a_user(
 
 )
 def show_all_twets():
-    query = """SELECT tweet_id,
-    user_id,
-    user_name,
-    content,
-    created_at,
-    updated_at
-    FROM tweet"""
+    query = "SELECT * FROM tweet"
 
-    list_tweet = []
+    list_tweets = []
 
-    resp = run_query(query=query)
+    resp = run_query(query)
     for ele in resp:
-        list_tweet.append(tweet_dict(ele))
+        list_tweets.append(tweet_dict(ele))
 
-    return list_tweet
+    return list_tweets
+
+
+#show user tweets
+@app.get(
+    path="/tweets/{user_id}",
+    tags=["Tweets"],
+    status_code=status.HTTP_200_OK,
+    summary="Show a tweet",
+    response_model=List[Tweet]
+)
+def show_a_tweet(user_id: str = Path(
+    ...
+)):
+    query = f"SELECT * FROM tweet WHERE user_id='{user_id}'"
+
+    list_tweets = []
+
+    resp = run_query(query)
+    for ele in resp:
+        list_tweets.append(tweet_dict(ele))
+
+    return list_tweets
+
+#show a specific tweet
+@app.get(
+    path="/tweet/{tweet_id}",
+    tags=["Tweets"],
+    status_code=status.HTTP_200_OK,
+    summary="Show a tweet",
+    response_model=Tweet
+)
+def show_a_tweet(tweet_id: str = Path(
+    ...
+)):
+    query = f"SELECT * FROM tweet WHERE tweet_id='{tweet_id}'"
+
+    resp = run_query(query)
+    for ele in resp:
+        tweet = tweet_dict(ele)
+
+    return tweet
 
 #post a new tweet
 @app.post(
@@ -269,7 +281,7 @@ def post_new_tweet(tweet: Tweet = Body(...)):
             - updated_at: Optional[datetime]
             - by: User
     """
-
+    query = "INSERT INTO tweet VALUES(?,?,?,?,?,?)"
     parameters = (
         str(tweet.tweet_id),
         str(tweet.by.user_id),
@@ -280,10 +292,54 @@ def post_new_tweet(tweet: Tweet = Body(...)):
     )
 
     try:
-        run_query("INSERT INTO tweet VALUES(?,?,?,?,?,?)", parameters)
+        run_query(query, parameters)
     except Exception as error:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="tweet repeat"
+            detail="tweet id repeat"
         )
+    return tweet
+
+#delete a specific tweet
+@app.delete(
+    path="/tweet/delete/{tweet_id}",
+    tags=["Tweets"],
+    status_code=status.HTTP_200_OK,
+    summary="Delete a tweet",
+    response_model=Tweet
+)
+def delete_a_tweet(tweet_id: str = Path(
+    ...
+)):
+
+    query = f"SELECT * FROM tweet WHERE tweet_id='{tweet_id}' "
+
+    resp = run_query(query)
+    for ele in resp:
+        dict_resp = tweet_dict(ele)
+
+    query = f"DELETE FROM tweet WHERE tweet_id='{tweet_id}'"
+    run_query(query)
+    return dict_resp
+
+#update a specific tweet
+@app.put(
+    path="/tweet/update/{tweet_id}",
+    tags=["Tweets"],
+    status_code=status.HTTP_200_OK,
+    summary="Update a tweet",
+    response_model=Tweet
+)
+def update_a_tweet(
+    tweet_id: str = Path(
+    ...
+),
+tweet: Tweet = Body(...)
+):
+    query = f"""UPDATE tweet SET 
+    content='{tweet.content}'
+    WHERE tweet_id='{tweet_id}' """
+
+    run_query(query)
+
     return tweet
