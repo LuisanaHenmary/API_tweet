@@ -2,7 +2,7 @@ import sqlite3
 
 """
     This file creates a database and two
-    tables called users and tweets, with its fields. only
+    tables called user and tweet, with its fields. only
     you need to run it once.
 """
 

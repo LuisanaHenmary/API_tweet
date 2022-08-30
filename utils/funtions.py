@@ -1,4 +1,5 @@
 import sqlite3 as sql3
+from fastapi import HTTPException, status
 
 """These are functions that are used repeatedly."""
 
@@ -23,7 +24,6 @@ def run_query(query, parameters = ()):
         #confirm the query, to make it permanent
         Connection.commit()
         return response
-
 
 def user_dict(values=()):
 
@@ -54,6 +54,19 @@ def user_dict(values=()):
         "birth_date": values[5]
     }
 
+def get_user_dict(user_id):
+    query=f"SELECT * FROM user WHERE user_id='{user_id}'"
+    resp = run_query(query)
+
+    try:
+        return user_dict(resp.fetchall()[0])
+    except Exception as error:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="This user does not exist"
+        )
+    
+
 def tweet_dict(values=()):
 
     """
@@ -64,27 +77,33 @@ def tweet_dict(values=()):
         Parameters:
             - values: Tuple
 
-        Returns a dictionary with the user information
-            - user_id: str
-            - email: str
-            - user_name: str
-            - first_name: str
-            - last_name: str
-            - birth_date: date
+        Returns a dictionary with the tweet information
+            - tweet_id: str
+            - content: str
+            - created_at: date
+            - update_at: date
+            - by: User
     
     """
 
-    query=f"""SELECT * FROM user WHERE user_id='{values[1]}' """
-
-    resp = run_query(query=query)
-    
-    for r in resp:
-        dict_rest = user_dict(r)
+    dict_resp = get_user_dict(values[1])
 
     return {
         "tweet_id":values[0],
         "content": values[3],
         "created_at": values[4],
         "updated_at": values[5],
-        "by":dict_rest
+        "by":dict_resp
     }
+
+def get_tweet_dict(tweet_id):
+    query = f"SELECT * FROM tweet WHERE tweet_id='{tweet_id}'"
+    resp = run_query(query)
+
+    try:
+        return tweet_dict(resp.fetchall()[0])
+    except Exception as error:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="This tweet does not exist"
+        )
