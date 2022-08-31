@@ -1,5 +1,4 @@
 #python native
-import re
 from typing import List
 from uuid import UUID
 from datetime import datetime
@@ -416,14 +415,7 @@ def post_new_tweet(tweet: Tweet = Body(...)):
             - by: User
     """
 
-    query = f"SELECT * FROM user WHERE user_id='{tweet.by.user_id}'"
-    resp = run_query(query)
-
-    if len(resp.fetchall()) == 0:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="This user does not exist"
-        )
+    get_user_dict(tweet.by.user_id)
 
     query = "INSERT INTO tweet VALUES(?,?,?,?,?,?)"
 
