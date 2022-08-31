@@ -1,0 +1,25 @@
+@url_base = http://127.0.0.1:8000
+
+### Show all tweets
+GET {{url_base}}/tweets
+
+### Show all tweets of U1
+GET {{url_base}}/tweets/a239451c-8525-4376-b8ca-070dd799a1a5
+
+### Show all tweets of U2
+GET {{url_base}}/tweets/a239501c-8525-4376-b8ca-070dd449a1a5
+
+### Show all tweets of U3
+GET {{url_base}}/tweets/a239501c-8525-4376-b8ca-070dd469a1a5
+
+###### 
+### Show 1º tweet of U1
+GET {{url_base}}/tweet/d1c9d4bb-5e46-4a4c-99c1-6b1840affe95
+
+### Show 2º tweet of U1
+GET {{url_base}}/tweet/d1c9d4bb-5e46-4a4c-99c1-6b1840affe85
+
+### Show 1º tweet of U2
+GET {{url_base}}/tweet/d2c9d4bb-6e46-4a4c-99c1-6b1840affe95
+### Show 1º tweet of U3
+GET {{url_base}}/tweet/d2c9d4bb-6e46-4a4c-99c1-6b1840affe65

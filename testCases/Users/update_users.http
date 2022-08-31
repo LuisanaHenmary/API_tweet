@@ -1,0 +1,44 @@
+@url_base = http://127.0.0.1:8000
+
+### Update a user U1
+PUT  {{url_base}}/users/update/a239451c-8525-4376-b8ca-070dd799a1a5
+
+{
+  "user_id": "a239501c-8525-4376-b8ca-070dd449a1a5",
+  "email": "luisanahenmary@gmail.com",
+  "user_name": "LPHC16",
+  "password": "Pasta456()",
+  "first_name": "Luisana",
+  "last_name": "Perez",
+  "birth_date": "1997-12-16"
+}
+
+### Update a user U2
+PUT  {{url_base}}/users/update/a239501c-8525-4376-b8ca-070dd449a1a5
+Content-Type: application/json
+
+{
+  "user_id": "a239501c-8525-4376-b8ca-070dd449a1a5",
+  "email": "jesusandres@gmail.com",
+  "user_name":"Jisus0719",
+  "password": "Japc1904()",
+  "first_name": "Jesus",
+  "last_name": "Perez",
+  "birth_date": "2004-07-19"
+}
+
+
+### Update a user U3
+PUT  {{url_base}}/users/update/a239501c-8525-4376-b8ca-070dd469a1a5
+Content-Type: application/json
+
+{
+  "user_id": "a239501c-8525-4376-b8ca-070dd469a1a5",
+  "email": "marisabelp@gmail.com",
+  "user_name":"Marucha67",
+  "password": "Mymillim66%",
+  "first_name": "Marisabel",
+  "last_name": "Cardenas",
+  "birth_date": "1994-03-17"
+}
+

@@ -1,0 +1,10 @@
+@url_base = http://127.0.0.1:8000
+
+### Delete a user U1
+DELETE {{url_base}}/users/delete/a239451c-8525-4376-b8ca-070dd799a1a5
+
+### Delete a user U2
+DELETE {{url_base}}/users/delete/a239501c-8525-4376-b8ca-070dd449a1a5
+
+### Delete a user U3
+DELETE {{url_base}}/users/delete/a239501c-8525-4376-b8ca-070dd469a1a5

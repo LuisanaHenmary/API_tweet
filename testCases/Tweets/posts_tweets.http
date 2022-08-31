@@ -1,0 +1,69 @@
+@url_base = http://127.0.0.1:8000
+
+### post the 1º tweet of U1
+POST {{url_base}}/tweet
+Content-Type: application/json
+
+{
+  "tweet_id": "d1c9d4bb-5e46-4a4c-99c1-6b1840affe95",
+  "content": "my first tweet",
+  "by": {
+        "user_id": "a239451c-8525-4376-b8ca-070dd799a1a5",
+        "email": "luisanahenmary@gmail.com",
+        "user_name": "LPC1612",
+        "first_name": "Luisana",
+        "last_name": "Perez",
+        "birth_date": "1997-12-16"
+    }
+}
+
+### post the 2º tweet of U1
+POST {{url_base}}/tweet
+Content-Type: application/json
+
+{
+  "tweet_id": "d1c9d4bb-5e46-4a4c-99c1-6b1840affe85",
+  "content": "my second tweet",
+  "by": {
+        "user_id": "a239451c-8525-4376-b8ca-070dd799a1a5",
+        "email": "luisanahenmary@gmail.com",
+        "user_name": "LPC1612",
+        "first_name": "Luisana",
+        "last_name": "Perez",
+        "birth_date": "1997-12-16"
+    }
+}
+
+### post the 1º tweet of U2
+POST {{url_base}}/tweet
+Content-Type: application/json
+
+{
+    "tweet_id": "d2c9d4bb-6e46-4a4c-99c1-6b1840affe95",
+    "content": "my FIRST tweet, jisus",
+    "by": {
+        "user_id": "a239501c-8525-4376-b8ca-070dd449a1a5",
+        "email": "jesusandres@gmail.com",
+        "user_name":"Jisus07",
+        "first_name": "Jesus",
+        "last_name": "Perez",
+        "birth_date": "2004-07-19"
+    }
+}
+
+### post the 1º tweet of U3
+POST {{url_base}}/tweet
+Content-Type: application/json
+
+{
+    "tweet_id": "d2c9d4bb-6e46-4a4c-99c1-6b1840affe65",
+    "content": "my first tweet in colombia, marisabel",
+    "by": {
+        "user_id": "a239501c-8525-4376-b8ca-070dd469a1a5",
+        "email": "marisabelp@gmail.com",
+        "user_name":"Marucha667",
+        "first_name": "Marisabel",
+        "last_name": "Cardenas",
+        "birth_date": "1994-03-17"
+    }
+}

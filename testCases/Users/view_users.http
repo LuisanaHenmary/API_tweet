@@ -1,0 +1,13 @@
+@url_base = http://127.0.0.1:8000
+
+### Show all users
+GET {{url_base}}/users
+
+### Show a users U1
+GET {{url_base}}/users/a239451c-8525-4376-b8ca-070dd799a1a5
+
+### Show a users U2
+GET {{url_base}}/users/a239501c-8525-4376-b8ca-070dd449a1a5
+
+### Show a users U3
+GET {{url_base}}/users/a239501c-8525-4376-b8ca-070dd469a1a5

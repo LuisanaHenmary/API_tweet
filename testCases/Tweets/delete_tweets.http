@@ -1,0 +1,11 @@
+@url_base = http://127.0.0.1:8000
+
+
+### Delete 1º tweet of U1
+DELETE {{url_base}}/tweet/delete/d1c9d4bb-5e46-4a4c-99c1-6b1840affe95
+### Delete 2º tweet of U1
+DELETE {{url_base}}/tweet/delete/d1c9d4bb-5e46-4a4c-99c1-6b1840affe85
+### Delete 1º tweet of U2
+DELETE {{url_base}}/tweet/delete/d2c9d4bb-6e46-4a4c-99c1-6b1840affe95
+### Delete 1º tweet of U2
+DELETE {{url_base}}/tweet/delete/d2c9d4bb-6e46-4a4c-99c1-6b1840affe65

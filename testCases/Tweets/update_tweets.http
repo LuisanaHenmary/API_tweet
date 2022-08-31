@@ -1,0 +1,35 @@
+@url_base = http://127.0.0.1:8000
+
+### Update 1º tweet of U1
+PUT {{url_base}}/tweet/update/d1c9d4bb-5e46-4a4c-99c1-6b1840affe95
+Content-Type: application/json
+
+{
+  "tweet_id": "d1c9d4bb-5e46-4a4c-99c1-6b1840affe95",
+  "content": "Hello update my first tweet",
+  "by": {
+        "user_id": "a239451c-8525-4376-b8ca-070dd799a1a5",
+        "email": "luisanahenmary@gmail.com",
+        "user_name": "LPC1612",
+        "first_name": "Luisana",
+        "last_name": "Perez",
+        "birth_date": "1997-12-16"
+    }
+}
+
+### Update 2º tweet of U1
+PUT {{url_base}}/tweet/update/d1c9d4bb-5e46-4a4c-99c1-6b1840affe85
+Content-Type: application/json
+
+{
+  "tweet_id": "d1c9d4bb-5e46-4a4c-99c1-6b1840affe85",
+  "content": "Update my second tweet, do you really read this?",
+  "by": {
+        "user_id": "a239451c-8525-4376-b8ca-070dd799a1a5",
+        "email": "luisanahenmary@gmail.com",
+        "user_name": "LPC1612",
+        "first_name": "Luisana",
+        "last_name": "Perez",
+        "birth_date": "1997-12-16"
+    }
+}
