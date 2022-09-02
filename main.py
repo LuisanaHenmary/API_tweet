@@ -9,7 +9,8 @@ from fastapi import (
     status,
     HTTPException,
     Path,
-    Body
+    Body,
+    Form
 )
 
 #models directory
@@ -26,16 +27,18 @@ from models.user import (
 #utils directory
 from utils.funtions import (
     run_query,
+    get_list,
     user_dict,
-    tweet_dict,
     get_user_dict,
+    verify_user_existence,
+    tweet_dict,
     get_tweet_dict
 )
 
 #uvicorn main:app --reload 
 app = FastAPI()
 
-###DEFAULT###
+### DEFAULT ###
 
 #home
 @app.get(
@@ -111,6 +114,43 @@ def sign_up_user(user: UserRegister = Body(...)):
     
     return user
 
+#user login
+@app.post(
+    path="/auth/login",
+    tags=["Users"],
+    response_model=User,
+    status_code=status.HTTP_200_OK,
+    summary="Login a user"
+)
+def log_in_user(
+    username: str = Form(...),
+    password: str = Form(...)
+):
+    """
+        Log in a user
+
+        This path operation login a user in the app
+
+        Parameters:\n
+            - user_id: UUID
+            - password: str
+
+        Return a json with the basic user information:\n
+            - user_id: UUID
+            - email: EmailStr
+            - user_name: str
+            - first_name: str
+            - last_name: str
+            - birth_date: date
+    """
+
+    query = f"SELECT * FROM user WHERE user_name='{username}' AND password='{password}'"
+    message = "Invalid username or password"
+
+    user_info = verify_user_existence(query,message)
+    return user_info
+
+
 #show all users
 @app.get(
     path="/users",
@@ -140,12 +180,7 @@ def show_all_users():
 
     query = "SELECT * FROM user"
 
-    list_users = []
-
-    resp = run_query(query)
-
-    for ele in resp:
-        list_users.append(user_dict(ele))
+    list_users = get_list(query, user_dict)
 
     return list_users
 
@@ -181,7 +216,8 @@ def show_a_user(
             - birth_date: date
     """
 
-    return get_user_dict(user_id)
+    user_info = get_user_dict(user_id)
+    return user_info
 
 #updates a specific user
 @app.put(
@@ -271,122 +307,14 @@ def delete_a_user(
     query = f"DELETE FROM tweet WHERE user_id='{user_id}'"
     run_query(query)
 
-    dict_resp = get_user_dict(user_id)
+    user_info = get_user_dict(user_id)
 
     query = f"DELETE FROM user WHERE user_id='{user_id}'"
     run_query(query)
 
-    return dict_resp
+    return user_info
 
 ###TWEETS###
-
-#shows all tweets
-@app.get(
-    path="/tweets",
-    tags=["Tweets"],
-    response_model=List[Tweet],
-    status_code=status.HTTP_200_OK,
-    summary="Shows all tweets"
-
-)
-def show_all_twets():
-
-    """
-        Show all tweets 
-
-        This path operation shows all tweet in the app
-
-        Parameters:\n
-            - 
-
-        Return a json list with all tweets in the app, with the following keys\n
-            - tweet_id: UUID
-            - content: str
-            - created_at: datetime
-            - updated_at: datetime
-            - by: User
-    """
-
-    query = "SELECT * FROM tweet"
-
-    list_tweets = []
-
-    resp = run_query(query)
-
-    for ele in resp:
-        list_tweets.append(tweet_dict(ele))
-
-    return list_tweets
-
-#show user's tweets
-@app.get(
-    path="/tweets/{user_id}",
-    tags=["Tweets"],
-    status_code=status.HTTP_200_OK,
-    summary="Show a user's tweets",
-    response_model=List[Tweet]
-)
-def show_a_user_tweet(user_id: UUID = Path(
-    ...,
-    title="User ID",
-    description="It is the ID of one of many users"
-)):
-
-    """
-        Show all tweets of a single user
-
-        This path operation shows all tweets from a specific user
-
-        Parameters:\n
-            - user_id: UUID
-
-        Return a json list with all the tweets of a single user in the app, with the following keys\n
-            - tweet_id: UUID
-            - content: str
-            - created_at: datetime
-            - updated_at: datetime
-            - by: User
-    """
-
-    query = f"SELECT * FROM tweet WHERE user_id='{user_id}'"
-
-    list_tweets = []
-
-    resp = run_query(query)
-    for ele in resp:
-        list_tweets.append(tweet_dict(ele))
-
-    return list_tweets
-
-#show a specific tweet
-@app.get(
-    path="/tweet/{tweet_id}",
-    tags=["Tweets"],
-    status_code=status.HTTP_200_OK,
-    summary="Show a tweet",
-    response_model=Tweet
-)
-def show_a_tweet(tweet_id: UUID = Path(
-    ...
-)):
-
-    """
-        Show a specific tweet
-
-        This path operation shows only one tweet
-
-        Parameters:\n
-            - tweet_id: UUID
-
-        Return a json list with the tweet info in the app, with the following keys\n
-            - tweet_id: UUID
-            - content: str
-            - created_at: datetime
-            - updated_at: datetime
-            - by: User
-    """
-
-    return get_tweet_dict(tweet_id)
 
 #post a new tweet
 @app.post(
@@ -439,6 +367,109 @@ def post_new_tweet(tweet: Tweet = Body(...)):
             detail="tweet id repeat"
         )
     return tweet
+
+#shows all tweets
+@app.get(
+    path="/tweets",
+    tags=["Tweets"],
+    response_model=List[Tweet],
+    status_code=status.HTTP_200_OK,
+    summary="Shows all tweets"
+
+)
+def show_all_twets():
+
+    """
+        Show all tweets 
+
+        This path operation shows all tweet in the app
+
+        Parameters:\n
+            - 
+
+        Return a json list with all tweets in the app, with the following keys\n
+            - tweet_id: UUID
+            - content: str
+            - created_at: datetime
+            - updated_at: datetime
+            - by: User
+    """
+
+    query = "SELECT * FROM tweet"
+
+    list_tweets = get_list(query, tweet_dict)
+
+    return list_tweets
+
+#show user's tweets
+@app.get(
+    path="/tweets/{user_id}",
+    tags=["Tweets"],
+    status_code=status.HTTP_200_OK,
+    summary="Show a user's tweets",
+    response_model=List[Tweet]
+)
+def show_a_user_tweets(user_id: UUID = Path(
+    ...,
+    title="User ID",
+    description="It is the ID of one of many users"
+)):
+
+    """
+        Show all tweets of a single user
+
+        This path operation shows all tweets from a specific user
+
+        Parameters:\n
+            - user_id: UUID
+
+        Return a json list with all the tweets of a single user in the app, with the following keys\n
+            - tweet_id: UUID
+            - content: str
+            - created_at: datetime
+            - updated_at: datetime
+            - by: User
+    """
+
+    query = f"SELECT * FROM tweet WHERE user_id='{user_id}'"
+
+    list_tweets = get_list(query, tweet_dict)
+
+    return list_tweets
+
+#show a specific tweet
+@app.get(
+    path="/tweet/{tweet_id}",
+    tags=["Tweets"],
+    status_code=status.HTTP_200_OK,
+    summary="Show a tweet",
+    response_model=Tweet
+)
+def show_a_tweet(tweet_id: UUID = Path(
+    ...
+)):
+
+    """
+        Show a specific tweet
+
+        This path operation shows only one tweet
+
+        Parameters:\n
+            - tweet_id: UUID
+
+        Return a json list with the tweet info in the app, with the following keys\n
+            - tweet_id: UUID
+            - content: str
+            - created_at: datetime
+            - updated_at: datetime
+            - by: User
+    """
+
+    tweet_info = get_tweet_dict(tweet_id)
+
+    return tweet_info
+
+
 
 #update a specific tweet
 @app.put(
@@ -513,8 +544,8 @@ def delete_a_tweet(tweet_id: UUID = Path(
             - by: User
     """
 
-    dict_resp = get_tweet_dict(tweet_id)
+    tweew_info = get_tweet_dict(tweet_id)
 
     query = f"DELETE FROM tweet WHERE tweet_id='{tweet_id}'"
     run_query(query)
-    return dict_resp
+    return tweew_info

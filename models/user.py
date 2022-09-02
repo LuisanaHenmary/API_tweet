@@ -11,6 +11,12 @@ from pydantic import (
 )
 
 class UserBase(BaseModel):
+
+    """
+        This class, which descends from BaseModel,
+        It's the base for any model related to the usar
+    """
+
     user_id: UUID  = Field(
         ...,
         title="User ID",
@@ -34,6 +40,11 @@ class UserBase(BaseModel):
     )
 
 class User(UserBase):
+
+    """
+        This class, which descends from UserBase,
+        It's to display all user information, except password
+    """
     
     first_name: str = Field(
         ...,
@@ -60,7 +71,13 @@ class User(UserBase):
     )
 
 
-class UserLogin(UserBase):
+class UserAuth(UserBase):
+
+    """
+        This class, which descends from UserBase,
+        It's to enter the password
+    """
+
     password: str = Field(
         ...,
         min_length=8,
@@ -70,5 +87,9 @@ class UserLogin(UserBase):
         example="noUseThisPassword00"
     )
 
-class UserRegister(User, UserLogin):
+class UserRegister(User, UserAuth):
+    """
+        This class, which descends from User and UserAuth,
+        It is to enter the user data, when registering
+    """
     pass

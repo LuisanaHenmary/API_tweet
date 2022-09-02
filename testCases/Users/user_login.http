@@ -1,0 +1,45 @@
+@url_base = http://127.0.0.1:8000
+
+### login U1
+POST {{url_base}}/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+username=LPC1612
+&password=Caraota123()
+
+### login U2
+POST {{url_base}}/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+username=Jisus07
+&password=Copito67/
+
+### login U3
+POST {{url_base}}/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+username=Marucha667
+&password=Millim66%
+
+#### after update
+
+### login 2 U1
+POST {{url_base}}/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+username=LPHC16
+&password=Pasta456()
+
+### login 2 U2
+POST {{url_base}}/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+username=Jisus0719
+&password=Japc1904()
+
+### login 2 U3
+POST {{url_base}}/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+username=Marucha67
+&password=Mymillim66%

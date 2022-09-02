@@ -13,6 +13,12 @@ from pydantic import (
 from .user import User
 
 class TweetBase(BaseModel):
+
+    """
+        This class, which descends from BaseModel,
+        It's the base for any model related to the tweet
+    """
+
     tweet_id: UUID  = Field(
         ...,
         title="Tweet ID",
@@ -34,6 +40,12 @@ class TweetBase(BaseModel):
     )
 
 class UpdateTweet(TweetBase):
+
+    """
+        This class, which descends from TweetBase,
+        It's for when a tweet is updated
+    """
+
     updated_at: Optional[datetime] = Field(
         default=None,
         title="Update date",
@@ -41,6 +53,12 @@ class UpdateTweet(TweetBase):
     )
 
 class Tweet(UpdateTweet):
+
+    """
+        This class, which descends from UpdateTweet,
+        It is to show all the information of the tweet
+    """
+
     created_at: Optional[datetime] = Field(
         default=None,
         title="Creation date",
