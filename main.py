@@ -58,8 +58,7 @@ def home():
         Return a json with a link for the documentation of the api:\n
             - Link doc: str
 
-    """
-
+    """  
     return {"Link doc":"http://127.0.0.1:8000/redoc"}
 
 ### USERS ###
